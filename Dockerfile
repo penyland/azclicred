@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/runtime:3.1 AS base
+FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 WORKDIR /app
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
@@ -18,6 +18,8 @@ FROM build AS publish
 RUN dotnet publish "AzCliCred.csproj" -c Release -o /app/publish
 
 FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
 
 RUN rm /usr/bin/dotnet
 
@@ -39,6 +41,5 @@ RUN curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin -Channel 5.
     && ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-WORKDIR /app
-COPY --from=publish /app/publish .
+
 ENTRYPOINT ["dotnet", "AzCliCred.dll"]

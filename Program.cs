@@ -11,13 +11,20 @@ namespace AzCliCred
         {
             Console.WriteLine("Hello World!");
 
-            var credential = new DefaultAzureCredential();
-            //var credential = new AzureCliCredential();
-            var client = new KeyClient(new Uri("https://stsgpntest-kv.vault.azure.net/"), credential);
+            try
+            {
+                //var credential = new DefaultAzureCredential();
+                var credential = new AzureCliCredential();
+                var client = new KeyClient(new Uri("https://stsgpntest-kv.vault.azure.net/"), credential);
 
-            var key = await client.GetKeyAsync("key1");
+                var key = await client.GetKeyAsync("key1");
 
-            Console.WriteLine(key.Value.Name);
+                Console.WriteLine(key.Value.Name);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

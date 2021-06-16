@@ -5,7 +5,7 @@ services:
   azclicred:
     image: azclicred
     volumes:
-      - "${HOME}/.azure:/root/.azure"
+      - "${USERPROFILE}/.azure:/root/.azure"
     build:
       context: .
       dockerfile: ./Dockerfile
